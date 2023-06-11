@@ -21,11 +21,11 @@ export async function POST(request: NextRequest) {
     const req = await request.json();
     try{
       if(req.task){
-        const res=db.insert(todoTable).values({
+        const res=await db.insert(todoTable).values({
           task:req.task,
         }).returning();
       console.log(res)   
-    return NextResponse.json({message:"Data added successfully"}) 
+    return NextResponse.json({message:"Data added successfully",data:res}) 
   }else{
     throw new Error("Task field is required")
   }
@@ -38,3 +38,47 @@ export async function POST(request: NextRequest) {
     
   }
  // databse query " INSERT INTO todo (task) VALUES ('task 1') "*/
+
+ 
+export async function PUT(request: NextRequest) {
+  const req = await request.json();
+  try{
+    if(req.task){
+      const res=await db.insert(todoTable).values({
+        task:req.task,
+      }).returning();
+    console.log(res)   
+  return NextResponse.json({message:"Data added successfully",data:res}) 
+}else{
+  throw new Error("Task field is required")
+}
+
+  }
+  catch (error){
+  return NextResponse.json({message:(error as{message:string}).message})
+    
+    }
+  
+}
+
+
+export async function DELETE(request: NextRequest) {
+  const req = await request.json();
+  try{
+    if(req.task){
+      const res=await db.insert(todoTable).values({
+        task:req.task,
+      }).returning();
+    console.log(res)   
+  return NextResponse.json({message:"Data added successfully",data:res}) 
+}else{
+  throw new Error("Task field is required")
+}
+
+  }
+  catch (error){
+  return NextResponse.json({message:(error as{message:string}).message})
+    
+    }
+  
+}
