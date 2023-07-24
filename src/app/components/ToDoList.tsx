@@ -1,39 +1,52 @@
-import { Todo } from '@/lib/drizzle'
-import React from 'react'
- 
-const getData= async()=>{
-    try{
-    const res= await fetch("http://127.0.0.1:3000/api/todo",{
-        method:"GET",
-        cache:"no-store",
-        headers:{
-            "Content-Type" : "application/json"
-        }
+
+import { Todo } from "@/lib/drizzle";
+import React from "react";
+import TodoItem from "./TodoItem";
+// import { useRouter } from "next/navigation";
+const getData = async () => {
+  try {
+    const res = await fetch("http://127.0.0.1:3000/api/todo", {
+      method: "GET",
+      cache: "no-store",
+      
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-if(!res.ok){
-    throw new Error("Failed to fetch data")
-}; 
-const result=await res.json()
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const result = await res.json();
 
-return result
-}catch (err){
-console.log(err)
-}}
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+const handleSubmit = async (task: Todo) => {
+  try {
+    console.log(task);
+    if (task) {
+      const res = await fetch("api/todo", {
+        method: "DELETE",
+        body: JSON.stringify({
+          task: task.task,
+        }),
+      });
 
-export const ToDoList =async () => {
-  const res:{data:Todo[]} =await getData();
-   
+      //  refresh()
+    }
+  } catch (error) {
+    console.log("error");
+  }
+};
+export const ToDoList = async () => {
+  const res: { data: Todo[] } = await getData();
+  console.log(res);
   return (
-    <div className='max-h-[350px] overflow-auto mb-4'>
-   { 
-    res.data.map((item)=>{
-        return(
-    <div className='bg-gray-100 py-4 px-4 flex items-center gap-x-3 shadow rounded-lg my-3'>
-    <div className='h-3 w-3 bg-secondary rounded-full'></div>
-  <p className='text-lg font-medium'>{item.task}</p>
-    </div>)}
-    )}</div>
-        )
-        }
- 
+    <div className="max-h-[350px] overflow-auto mb-4">
+      {res.data.map((item) => <TodoItem item={item} key={item.id} />)}
+    </div>
+  );
+};

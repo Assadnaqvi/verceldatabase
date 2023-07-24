@@ -20,3 +20,4 @@ import {
   export type NewTodo = InferModel<typeof todoTable, "insert">; // insert type
   
   export const db = drizzle(sql);
+ 
